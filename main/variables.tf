@@ -27,3 +27,19 @@ variable "project_name" {
     type = string
     default = "Macsolutions1"
 }
+
+variable "storage_acc" {
+    description = "Name of the storage account"
+    type = string
+    default = "macstorage12345"
+}
+variable "tier" {
+    description = "Name of the tier for storage account"
+    type = string
+    default = "Standard"
+}
+ variable "replication_type" {
+    description = "Name of the replication_type"
+    type = string
+    default = "GRS"
+ }
