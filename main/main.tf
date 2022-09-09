@@ -1,17 +1,17 @@
 provider "azurerm" {
-    features {}
+    features{}
 }
-
-resource "azurerm_resource_group" "rg" {
-    name = local.rg_name
-    location = var.location
-    tags = var.tags
+module "resource_group" {
+    source = "../modules/resourcegroup"
 }
-resource "azurerm_storage_account" "rg" {
-  name                     = var.storage_acc
-  resource_group_name      = azurerm_resource_group.rg.name
-  location                 = azurerm_resource_group.rg.location
-  account_tier             = var.tier
-  account_replication_type = var.replication_type 
-  tags = var.tags
-  }
+module "storage_account" {
+  source = "../modules/storageaccount"
+  depends_on = [module.resource_group]
+  resource_group_name = module.resource_group.resource_group_name
+}
+module "function_app" {
+  source = "../modules/functionapp"
+  depends_on = [module.storage_account]
+  storage_account_name = module.storage_account.storage_account_name
+  storage_account_access_key = module.storage_account.storage_account_access_key
+}
